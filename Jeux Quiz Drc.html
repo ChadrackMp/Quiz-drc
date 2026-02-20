@@ -1,0 +1,1635 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz RDC — Culture Générale</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #050a12;
+  --bg-primary: #0b1120;
+  --bg-card: #111c33;
+  --bg-card-hover: #162545;
+  --gold: #d4a843;
+  --gold-light: #f0d078;
+  --gold-glow: rgba(212,168,67,0.25);
+  --green: #2ecc71;
+  --green-glow: rgba(46,204,113,0.2);
+  --red: #e74c3c;
+  --red-glow: rgba(231,76,60,0.2);
+  --blue: #3498db;
+  --blue-glow: rgba(52,152,219,0.2);
+  --text: #e8ecf4;
+  --text-secondary: #8a94a8;
+  --text-muted: #4a5568;
+  --border: rgba(212,168,67,0.12);
+  --border-hover: rgba(212,168,67,0.35);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.dark { /* default */ }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+/* ============ BG PATTERN ============ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(212,168,67,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(46,204,113,0.04) 0%, transparent 50%),
+    repeating-conic-gradient(rgba(212,168,67,0.02) 0% 25%, transparent 0% 50%) 0 0 / 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.06); } }
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(212,168,67,0.2); }
+  50% { box-shadow: 0 0 40px rgba(212,168,67,0.4); }
+}
+@keyframes correctFlash {
+  0% { background: var(--green-glow); }
+  100% { background: transparent; }
+}
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes starSpin {
+  from { transform: rotate(0deg) scale(0); opacity: 0; }
+  to { transform: rotate(360deg) scale(1); opacity: 1; }
+}
+
+/* ============ LAYOUT ============ */
+.app-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  min-height: 100vh;
+}
+
+/* ============ HEADER ============ */
+.app-header {
+  text-align: center;
+  padding: 30px 0 20px;
+  animation: fadeInUp 0.6s ease both;
+}
+
+.header-flag {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 18px;
+}
+
+.flag-stripe {
+  width: 18px;
+  height: 50px;
+  border-radius: 3px;
+}
+
+.flag-stripe:nth-child(1) { background: #007FFF; border-radius: 3px 0 0 3px; }
+.flag-stripe:nth-child(2) { background: #CE1021; }
+.flag-stripe:nth-child(3) { background: #F7D618; border-radius: 0 3px 3px 0; }
+
+.header-star {
+  color: #F7D618;
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.app-header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), #c49332);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.app-header .subtitle {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* ============ SCORE BAR ============ */
+.score-bar {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 14px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease 0.15s both;
+}
+
+.score-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+}
+
+.score-item i {
+  font-size: 1rem;
+}
+
+.score-item .s-val {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.si-score i { color: var(--gold); }
+.si-correct i { color: var(--green); }
+.si-wrong i { color: var(--red); }
+.si-streak i { color: #f39c12; }
+
+/* ============ SCREENS ============ */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+  animation: fadeInScale 0.4s ease both;
+}
+
+/* ============ CATEGORY SELECTION ============ */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.cat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.cat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--cat-color, var(--gold));
+}
+
+.cat-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px var(--gold-glow);
+}
+
+.cat-card:active { transform: translateY(-1px); }
+
+.cat-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto 14px;
+  background: rgba(212,168,67,0.1);
+  color: var(--gold);
+}
+
+.cat-card:nth-child(2) .cat-icon { background: rgba(46,204,113,0.1); color: var(--green); }
+.cat-card:nth-child(3) .cat-icon { background: rgba(52,152,219,0.1); color: var(--blue); }
+.cat-card:nth-child(4) .cat-icon { background: rgba(231,76,60,0.1); color: var(--red); }
+.cat-card:nth-child(5) .cat-icon { background: rgba(155,89,182,0.1); color: #9b59b6; }
+.cat-card:nth-child(6) .cat-icon { background: rgba(243,156,18,0.1); color: #f39c12; }
+.cat-card:nth-child(7) .cat-icon { background: linear-gradient(135deg, rgba(212,168,67,0.15), rgba(46,204,113,0.15)); color: var(--gold-light); }
+
+.cat-card:nth-child(1) { --cat-color: var(--gold); }
+.cat-card:nth-child(2) { --cat-color: var(--green); }
+.cat-card:nth-child(3) { --cat-color: var(--blue); }
+.cat-card:nth-child(4) { --cat-color: var(--red); }
+.cat-card:nth-child(5) { --cat-color: #9b59b6; }
+.cat-card:nth-child(6) { --cat-color: #f39c12; }
+.cat-card:nth-child(7) { --cat-color: var(--gold); }
+
+.cat-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.cat-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ============ QUESTION SCREEN ============ */
+.question-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.q-category-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.q-back-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.q-back-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.progress-container {
+  margin-bottom: 24px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.progress-info .current-q { font-weight: 700; color: var(--gold); }
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-card);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  margin-bottom: 20px;
+  position: relative;
+  animation: fadeInUp 0.4s ease both;
+}
+
+.question-number {
+  position: absolute;
+  top: -14px;
+  left: 24px;
+  background: linear-gradient(135deg, var(--gold), #c49332);
+  color: #0b1120;
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 4px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.question-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+.hint-text {
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+  display: none;
+}
+
+.hint-text.visible { display: block; animation: fadeInUp 0.3s ease both; }
+
+.answers-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.answer-btn {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.answer-btn:hover:not(.disabled) {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+
+.answer-letter {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: rgba(212,168,67,0.1);
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+
+.answer-btn:hover:not(.disabled) .answer-letter {
+  background: var(--gold);
+  color: var(--bg-deep);
+}
+
+.answer-btn.correct {
+  border-color: var(--green) !important;
+  background: var(--green-glow) !important;
+  animation: correctFlash 0.6s ease;
+}
+
+.answer-btn.correct .answer-letter {
+  background: var(--green);
+  color: #fff;
+}
+
+.answer-btn.wrong {
+  border-color: var(--red) !important;
+  background: var(--red-glow) !important;
+  animation: wrongShake 0.5s ease;
+}
+
+.answer-btn.wrong .answer-letter {
+  background: var(--red);
+  color: #fff;
+}
+
+.answer-btn.disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.answer-btn.correct.disabled, .answer-btn.wrong.disabled { opacity: 1; }
+
+.answer-result-icon {
+  margin-left: auto;
+  font-size: 1.1rem;
+  display: none;
+}
+
+.answer-btn.correct .answer-result-icon,
+.answer-btn.wrong .answer-result-icon {
+  display: block;
+}
+
+.answer-btn.correct .answer-result-icon { color: var(--green); }
+.answer-btn.wrong .answer-result-icon { color: var(--red); }
+
+/* Explanation */
+.explanation-box {
+  background: rgba(212,168,67,0.06);
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: none;
+  animation: fadeInUp 0.35s ease both;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.explanation-box.visible { display: block; }
+
+.explanation-box strong {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ============ ACTION BUTTONS ============ */
+.action-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 28px;
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), #c49332);
+  color: #0b1120;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 20px var(--gold-glow);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-hint {
+  background: none;
+  border: 1px solid rgba(52,152,219,0.3);
+  color: var(--blue);
+  font-size: 0.82rem;
+  padding: 8px 16px;
+}
+
+.btn-hint:hover { background: var(--blue-glow); }
+
+/* ============ RESULTS SCREEN ============ */
+.results-container {
+  text-align: center;
+  animation: fadeInScale 0.5s ease both;
+}
+
+.results-trophy {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  animation: starSpin 0.8s ease both 0.2s;
+}
+
+.results-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.results-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 28px;
+}
+
+.results-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.result-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 14px;
+  animation: countUp 0.5s ease both;
+}
+
+.result-stat:nth-child(1) { animation-delay: 0.3s; }
+.result-stat:nth-child(2) { animation-delay: 0.45s; }
+.result-stat:nth-child(3) { animation-delay: 0.6s; }
+
+.result-stat .rs-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.result-stat:nth-child(1) .rs-val { color: var(--gold); }
+.result-stat:nth-child(2) .rs-val { color: var(--green); }
+.result-stat:nth-child(3) .rs-val { color: var(--red); }
+
+.result-stat .rs-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.results-message {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.results-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ============ CONFETTI ============ */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+}
+
+/* ============ TIMER ============ */
+.timer-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.timer-display.warning { color: var(--red); animation: pulse 0.8s ease infinite; }
+.timer-display i { font-size: 0.9rem; }
+
+/* ============ MOBILE RESPONSIVE ============ */
+@media (max-width: 640px) {
+  .app-wrapper { padding: 12px 10px 30px; }
+  .app-header h1 { font-size: 1.8rem; }
+  .category-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cat-card { padding: 18px 14px; }
+  .cat-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+  .question-card { padding: 24px 18px; }
+  .question-text { font-size: 1.02rem; }
+  .answer-btn { padding: 13px 14px; font-size: 0.88rem; }
+  .score-bar { gap: 14px; padding: 12px 16px; flex-wrap: wrap; justify-content: center; }
+  .results-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .result-stat { padding: 14px 8px; }
+  .result-stat .rs-val { font-size: 1.6rem; }
+  .action-row { justify-content: center; }
+  .question-top { flex-direction: column; gap: 10px; align-items: flex-start; }
+}
+
+@media (max-width: 380px) {
+  .category-grid { grid-template-columns: 1fr; }
+  .score-bar { gap: 10px; }
+  .score-item { font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-wrapper">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-flag">
+      <div class="flag-stripe"></div>
+      <div class="flag-stripe"></div>
+      <div class="flag-stripe"></div>
+    </div>
+    <span class="header-star"><i class="fas fa-star"></i></span>
+    <h1>Quiz RDC</h1>
+    <p class="subtitle">Testez vos connaissances sur la République Démocratique du Congo</p>
+  </header>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar" id="scoreBar">
+    <div class="score-item si-score">
+      <i class="fas fa-trophy"></i>
+      <span>Score :</span>
+      <span class="s-val" id="totalScore">0</span>
+    </div>
+    <div class="score-item si-correct">
+      <i class="fas fa-check-circle"></i>
+      <span class="s-val" id="correctCount">0</span>
+    </div>
+    <div class="score-item si-wrong">
+      <i class="fas fa-times-circle"></i>
+      <span class="s-val" id="wrongCount">0</span>
+    </div>
+    <div class="score-item si-streak">
+      <i class="fas fa-fire"></i>
+      <span class="s-val" id="streakCount">0</span>
+    </div>
+  </div>
+
+  <!-- SCREEN: CATEGORY SELECTION -->
+  <div class="screen active" id="screenCategories">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;margin-bottom:4px;">Choisissez une catégorie</h2>
+    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:6px;">Ou jouez toutes les catégories mélangées</p>
+    <div class="category-grid" id="categoryGrid"></div>
+  </div>
+
+  <!-- SCREEN: QUESTION -->
+  <div class="screen" id="screenQuestion">
+    <div class="question-top">
+      <div class="q-category-label" id="qCategoryLabel">
+        <i class="fas fa-tag"></i>
+        <span id="qCatText">Catégorie</span>
+      </div>
+      <button class="q-back-btn" id="qBackBtn">
+        <i class="fas fa-arrow-left"></i> Retour
+      </button>
+    </div>
+    <div class="progress-container">
+      <div class="progress-info">
+        <span>Question <span class="current-q" id="qCurrent">1</span> / <span id="qTotal">10</span></span>
+        <div class="timer-display" id="timerDisplay">
+          <i class="fas fa-clock"></i>
+          <span id="timerValue">20</span>s
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="question-card" id="questionCard">
+      <div class="question-number" id="questionNumber">Q1</div>
+      <div class="question-text" id="questionText"></div>
+      <div class="hint-text" id="hintText"></div>
+    </div>
+    <div class="answers-grid" id="answersGrid"></div>
+    <div class="explanation-box" id="explanationBox"></div>
+    <div class="action-row">
+      <button class="btn btn-hint" id="hintBtn" title="Indice">
+        <i class="fas fa-lightbulb"></i> Indice
+      </button>
+      <button class="btn btn-primary" id="nextBtn" style="display:none;">
+        Suivante <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- SCREEN: RESULTS -->
+  <div class="screen" id="screenResults">
+    <div class="results-container">
+      <div class="results-trophy" id="resultsTrophy">🏆</div>
+      <div class="results-title" id="resultsTitle">Bravo !</div>
+      <div class="results-subtitle" id="resultsSubtitle">Vous avez terminé le quiz</div>
+      <div class="results-stats">
+        <div class="result-stat">
+          <div class="rs-val" id="rScore">0</div>
+          <div class="rs-label">Points</div>
+        </div>
+        <div class="result-stat">
+          <div class="rs-val" id="rCorrect">0</div>
+          <div class="rs-label">Correctes</div>
+        </div>
+        <div class="result-stat">
+          <div class="rs-val" id="rWrong">0</div>
+          <div class="rs-label">Incorrectes</div>
+        </div>
+      </div>
+      <div class="results-message" id="resultsMessage"></div>
+      <div class="results-actions">
+        <button class="btn btn-primary" id="replayBtn">
+          <i class="fas fa-redo"></i> Rejouer
+        </button>
+        <button class="btn btn-secondary" id="homeBtn">
+          <i class="fas fa-home"></i> Accueil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+/* ============================================================
+   QUIZ RDC — CULTURE GÉNÉRALE
+   ============================================================ */
+
+// ---------- DARK/LIGHT MODE DETECTION ----------
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.classList.add('dark');
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+  if (event.matches) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+});
+
+// ---------- QUESTIONS DATABASE ----------
+var questions = {
+  "Histoire & Époques": [
+    {
+      q: "En quelle année la RDC a-t-elle obtenu son indépendance de la Belgique ?",
+      options: ["1958", "1960", "1962", "1955"],
+      answer: 1,
+      explanation: "La RDC a proclamé son indépendance le 30 juin 1960, mettant fin à la colonisation belge.",
+      hint: "C'est une année qui commence par 196..."
+    },
+    {
+      q: "Quel était le nom de la RDC sous le régime de Mobutu de 1971 à 1997 ?",
+      options: ["Congo-Léopoldville", "Zaïre", "Congo-Kinshasa", "État Libre du Congo"],
+      answer: 1,
+      explanation: "Mobutu a renommé le pays « Zaïre » en 1971 dans le cadre de sa politique d'authenticité (recours à l'authenticité).",
+      hint: "Ce nom commence par la lettre Z."
+    },
+    {
+      q: "Quel événement international de 1884-1885 a décidé du sort du Congo ?",
+      options: ["Le Traité de Versailles", "La Conférence de Berlin", "Le Congrès de Vienne", "La Conférence de Bandung"],
+      answer: 1,
+      explanation: "La Conférence de Berlin (1884-1885) a partagé l'Afrique entre les puissances européennes et attribué le Congo au roi Léopold II.",
+      hint: "Cette conférence s'est tenue dans la capitale allemande."
+    },
+    {
+      q: "Qui fut le premier Premier ministre de la RDC indépendante ?",
+      options: ["Joseph Kasa-Vubu", "Patrice Lumumba", "Moïse Tshombe", "Joseph-Désiré Mobutu"],
+      answer: 1,
+      explanation: "Patrice Émery Lumumba fut le premier Premier ministre du Congo indépendant en 1960, avant d'être assassiné en janvier 1961.",
+      hint: "Il est considéré comme le héros national de la RDC."
+    },
+    {
+      q: "Comment s'appelait la RDC quand elle était une propriété personnelle du roi Léopold II (1885-1908) ?",
+      options: ["Congo Belge", "État Indépendant du Congo", "Zaïre", "Congo Français"],
+      answer: 1,
+      explanation: "De 1885 à 1908, le territoire était l'« État Indépendant du Congo », propriété personnelle de Léopold II, avant d'être cédé à la Belgique.",
+      hint: "Le mot « indépendant » y figure, bien qu'ironiquement."
+    },
+    {
+      q: "En quelle année Patrice Lumumba a-t-il été assassiné ?",
+      options: ["1960", "1961", "1963", "1965"],
+      answer: 1,
+      explanation: "Patrice Lumumba a été assassiné le 17 janvier 1961 au Katanga, avec la complicité de forces belges et américaines.",
+      hint: "C'était un an après l'indépendance."
+    },
+    {
+      q: "Comment s'appelait la ville de Kinshasa avant 1966 ?",
+      options: ["Stanleyville", "Léopoldville", "Élisabethville", "Baudouinville"],
+      answer: 1,
+      explanation: "Kinshasa s'appelait Léopoldville, du nom du roi Léopold II. Elle a été renommée Kinshasa en 1966.",
+      hint: "Ce nom fait référence à un roi belge."
+    },
+    {
+      q: "La « Crise congolaise » (1960-1965) a été marquée par la sécession de quelle province ?",
+      options: ["Le Kivu", "Le Katanga", "L'Équateur", "Le Bandundu"],
+      answer: 1,
+      explanation: "Le Katanga, riche en minerais, a fait sécession sous Moïse Tshombe en 1960, provoquant une crise politique majeure.",
+      hint: "Cette province est connue pour ses richesses minières au sud du pays."
+    },
+    {
+      q: "Quel explorateur européen est arrivé au Congo en 1876-1877 en suivant le fleuve Congo ?",
+      options: ["David Livingstone", "Henry Morton Stanley", "Pierre Savorgnan de Brazza", "Cecil Rhodes"],
+      answer: 1,
+      explanation: "Henry Morton Stanley a exploré le fleuve Congo pour le compte du roi Léopold II, ouvrant la voie à la colonisation.",
+      hint: "On lui attribue la célèbre phrase « Dr. Livingstone, I presume? »."
+    },
+    {
+      q: "La Première Guerre du Congo a éclaté en quelle année ?",
+      options: ["1994", "1996", "1998", "2000"],
+      answer: 1,
+      explanation: "La Première Guerre du Congo a commencé en 1996, menée par l'AFDL de Laurent-Désiré Kabila, et a abouti à la chute de Mobutu en 1997.",
+      hint: "C'est deux ans après le génocide rwandais."
+    }
+  ],
+  "Présidents & Politique": [
+    {
+      q: "Qui fut le premier président de la République Démocratique du Congo ?",
+      options: ["Patrice Lumumba", "Joseph Kasa-Vubu", "Mobutu Sese Seko", "Laurent-Désiré Kabila"],
+      answer: 1,
+      explanation: "Joseph Kasa-Vubu a été le premier président de la RDC de 1960 à 1965, avant d'être renversé par Mobutu.",
+      hint: "Il était originaire du Bas-Congo (actuel Kongo-Central)."
+    },
+    {
+      q: "Combien d'années Mobutu Sese Seko a-t-il dirigé le pays ?",
+      options: ["25 ans", "32 ans", "28 ans", "20 ans"],
+      answer: 1,
+      explanation: "Mobutu a régné de 1965 à 1997, soit 32 ans de pouvoir autoritaire.",
+      hint: "Il est arrivé au pouvoir en 1965 et a quitté en 1997."
+    },
+    {
+      q: "Qui a renversé Mobutu en 1997 ?",
+      options: ["Joseph Kabila", "Laurent-Désiré Kabila", "Étienne Tshisekedi", "Denis Sassou-Nguesso"],
+      answer: 1,
+      explanation: "Laurent-Désiré Kabila, à la tête de l'AFDL (Alliance des Forces Démocratiques pour la Libération), a renversé Mobutu en mai 1997.",
+      hint: "C'est le père d'un autre président congolais."
+    },
+    {
+      q: "Qui est devenu président après l'assassinat de Laurent-Désiré Kabila en 2001 ?",
+      options: ["Étienne Tshisekedi", "Joseph Kabila", "Jean-Pierre Bemba", "Vital Kamerhe"],
+      answer: 1,
+      explanation: "Joseph Kabila, fils de Laurent-Désiré Kabila, lui a succédé en janvier 2001 à seulement 29 ans.",
+      hint: "Il porte le même nom de famille que son prédécesseur."
+    },
+    {
+      q: "Qui est le président actuel de la RDC (depuis 2019) ?",
+      options: ["Joseph Kabila", "Félix Tshisekedi", "Moïse Katumbi", "Martin Fayulu"],
+      answer: 1,
+      explanation: "Félix Antoine Tshisekedi Tshilombo est devenu président le 24 janvier 2019, marquant la première alternance pacifique en RDC.",
+      hint: "Il est le fils d'un célèbre opposant historique."
+    },
+    {
+      q: "Étienne Tshisekedi était le leader historique de quel parti politique ?",
+      options: ["PPRD", "UDPS", "MLC", "PALU"],
+      answer: 1,
+      explanation: "Étienne Tshisekedi a fondé l'UDPS (Union pour la Démocratie et le Progrès Social) en 1982 et en a été le leader jusqu'à sa mort en 2017.",
+      hint: "Les initiales contiennent « Démocratie » et « Progrès Social »."
+    },
+    {
+      q: "Quel était le surnom donné à Mobutu ?",
+      options: ["Le Léopard", "Le Guide Éclairé", "Le Maréchal", "Le Timonier"],
+      answer: 0,
+      explanation: "Mobutu était surnommé « Le Léopard » et portait toujours sa toque en peau de léopard. Son nom complet était Mobutu Sese Seko Kuku Ngbendu Wa Za Banga.",
+      hint: "C'est un félin africain qu'il portait toujours sur sa tête."
+    },
+    {
+      q: "En quelle année la première élection démocratique multipartite a-t-elle eu lieu en RDC ?",
+      options: ["2001", "2006", "2011", "1992"],
+      answer: 1,
+      explanation: "Les premières élections démocratiques libres et transparentes ont eu lieu en 2006, remportées par Joseph Kabila.",
+      hint: "C'est environ 5 ans après la mort de Laurent-Désiré Kabila."
+    },
+    {
+      q: "Combien de présidents la RDC a-t-elle eu depuis son indépendance en 1960 (jusqu'en 2024) ?",
+      options: ["3", "4", "5", "6"],
+      answer: 2,
+      explanation: "La RDC a eu 5 présidents : Kasa-Vubu (1960-65), Mobutu (1965-97), L.-D. Kabila (1997-2001), J. Kabila (2001-19), F. Tshisekedi (2019-).",
+      hint: "Comptez : Kasa-Vubu, Mobutu, les deux Kabila et Tshisekedi."
+    },
+    {
+      q: "Quel politique congolais était vice-président de 2003 à 2006 et a été jugé par la CPI ?",
+      options: ["Vital Kamerhe", "Jean-Pierre Bemba", "Azarias Ruberwa", "Adolphe Muzito"],
+      answer: 1,
+      explanation: "Jean-Pierre Bemba, leader du MLC, a été vice-président puis condamné par la Cour Pénale Internationale pour crimes commis en Centrafrique.",
+      hint: "Il est le leader du Mouvement de Libération du Congo (MLC)."
+    }
+  ],
+  "Écrivains & Littérature": [
+    {
+      q: "Qui est l'auteur du roman « La Vie et demie », figure majeure de la littérature congolaise ?",
+      options: ["Mudimbe V.Y.", "Sony Labou Tansi", "Henri Lopes", "Alain Mabanckou"],
+      answer: 1,
+      explanation: "Sony Labou Tansi (originaire des deux Congo) est l'auteur de « La Vie et demie » (1979), un classique de la littérature africaine.",
+      hint: "Son prénom fait penser à une marque japonaise d'électronique."
+    },
+    {
+      q: "Quel philosophe et écrivain congolais est connu pour « L'Odeur du père » et « The Invention of Africa » ?",
+      options: ["Pius Ngandu Nkashama", "V.Y. Mudimbe", "Zamenga Batukezanga", "Paul Lomami-Tshibamba"],
+      answer: 1,
+      explanation: "Valentin-Yves Mudimbe est un philosophe et écrivain majeur de la RDC, reconnu internationalement pour ses travaux sur l'identité africaine.",
+      hint: "Ses initiales sont V.Y.M."
+    },
+    {
+      q: "Quel écrivain congolais populaire est l'auteur de « Carte postale » et de nombreux romans en français facile ?",
+      options: ["Zamenga Batukezanga", "Antoine-Roger Bolamba", "Paul Lomami-Tshibamba", "Pius Ngandu Nkashama"],
+      answer: 0,
+      explanation: "Zamenga Batukezanga (1933-2000) était l'écrivain le plus populaire de la RDC, connu pour ses romans accessibles destinés au grand public.",
+      hint: "Son nom commence par Z et il écrivait pour le peuple."
+    },
+    {
+      q: "Qui a écrit « Ngando » (Le crocodile), considéré comme le premier roman congolais ?",
+      options: ["V.Y. Mudimbe", "Antoine-Roger Bolamba", "Paul Lomami-Tshibamba", "Thomas Mofolo"],
+      answer: 2,
+      explanation: "Paul Lomami-Tshibamba a écrit « Ngando » en 1948, considéré comme l'une des premières œuvres romanesques de la littérature congolaise.",
+      hint: "Le titre signifie « crocodile » en lingala."
+    },
+    {
+      q: "Quel poète congolais est l'auteur du recueil « Esanzo, chants pour mon pays » ?",
+      options: ["Antoine-Roger Bolamba", "Tchicaya U Tam'si", "Léopold Sédar Senghor", "Clémentine Faïk-Nzuji"],
+      answer: 0,
+      explanation: "Antoine-Roger Bolamba (1913-2002) est un poète pionnier de la littérature congolaise avec « Esanzo » publié en 1955.",
+      hint: "Il a été aussi journaliste et son recueil est lié à la musique traditionnelle."
+    },
+    {
+      q: "Quelle est la spécialité académique de Clémentine Faïk-Nzuji, figure littéraire congolaise ?",
+      options: ["Le roman policier", "La sémiologie et les traditions orales africaines", "La poésie surréaliste", "Le théâtre moderne"],
+      answer: 1,
+      explanation: "Clémentine Faïk-Nzuji est une spécialiste reconnue de la sémiologie africaine et des traditions orales, professeure à l'UCLouvain.",
+      hint: "Ses recherches portent sur les signes, symboles et traditions orales."
+    },
+    {
+      q: "Quel écrivain congolais a reçu le Grand Prix littéraire d'Afrique noire pour « Le Doyen Marri » ?",
+      options: ["Pius Ngandu Nkashama", "Henri Djombo", "Sylvain Bemba", "Georges Ngal"],
+      answer: 0,
+      explanation: "Pius Ngandu Nkashama est un écrivain et critique littéraire prolifique de la RDC, auteur de nombreux ouvrages de fiction et d'essais.",
+      hint: "Son nom contient « Ngandu » qui signifie crocodile."
+    },
+    {
+      q: "Dans quel domaine l'écrivain congolais Georges Ngal est-il particulièrement reconnu ?",
+      options: ["La bande dessinée", "La critique littéraire et le roman", "La musique", "Le cinéma"],
+      answer: 1,
+      explanation: "Georges Ngal est connu pour son roman « Giambatista Viko ou le viol du discours africain » et ses travaux de critique littéraire.",
+      hint: "Il a écrit sur un penseur italien du XVIIIe siècle."
+    }
+  ],
+  "Colonisation": [
+    {
+      q: "De quel pays la RDC était-elle une colonie ?",
+      options: ["La France", "La Belgique", "Le Royaume-Uni", "Le Portugal"],
+      answer: 1,
+      explanation: "La RDC a été colonisée par la Belgique. D'abord propriété personnelle de Léopold II (1885-1908), puis colonie belge (1908-1960).",
+      hint: "Ce pays européen a Bruxelles pour capitale."
+    },
+    {
+      q: "Quel roi belge possédait le Congo comme propriété personnelle ?",
+      options: ["Léopold Ier", "Léopold II", "Albert Ier", "Baudouin"],
+      answer: 1,
+      explanation: "Le roi Léopold II a possédé le Congo comme propriété personnelle de 1885 à 1908, période marquée par d'immenses atrocités.",
+      hint: "C'est le deuxième roi portant ce prénom."
+    },
+    {
+      q: "Quel système brutal était utilisé pour forcer les Congolais à récolter le caoutchouc sous Léopold II ?",
+      options: ["Le travail forcé avec mutilations", "L'esclavage classique", "Le servage", "L'impôt colonial"],
+      answer: 0,
+      explanation: "Sous Léopold II, les Congolais étaient soumis au travail forcé avec des mutilations (mains coupées) comme punition pour quotas non atteints.",
+      hint: "Les punitions incluaient des amputations d'un membre."
+    },
+    {
+      q: "En quelle année le Congo est-il passé de propriété de Léopold II à colonie de l'État belge ?",
+      options: ["1885", "1908", "1920", "1945"],
+      answer: 1,
+      explanation: "En 1908, face aux scandales internationaux sur les atrocités, Léopold II a été forcé de céder le Congo à l'État belge.",
+      hint: "C'est au début du XXe siècle, après les rapports de Casement et Morel."
+    },
+    {
+      q: "Quel journaliste et militant britannique a dénoncé les atrocités au Congo de Léopold II ?",
+      options: ["E.D. Morel", "Winston Churchill", "Albert Schweitzer", "Henry Morton Stanley"],
+      answer: 0,
+      explanation: "E.D. Morel a mené une campagne internationale contre les atrocités au Congo, créant la Congo Reform Association en 1904.",
+      hint: "Il a créé la « Congo Reform Association »."
+    },
+    {
+      q: "Quelle ressource naturelle était principalement exploitée au Congo sous Léopold II ?",
+      options: ["Le diamant", "Le caoutchouc", "Le cuivre", "L'or"],
+      answer: 1,
+      explanation: "Le caoutchouc était la ressource la plus exploitée sous Léopold II, alimentant la demande mondiale liée à l'industrie automobile naissante.",
+      hint: "Cette matière servait à fabriquer des pneus."
+    },
+    {
+      q: "Quel discours célèbre Patrice Lumumba a-t-il prononcé le 30 juin 1960 ?",
+      options: ["Le discours de Bandung", "Le discours d'indépendance dénonçant la colonisation", "Le discours d'Accra", "Le discours de la Table Ronde"],
+      answer: 1,
+      explanation: "Lumumba a prononcé un discours historique le 30 juin 1960, dénonçant les souffrances de la colonisation devant le roi Baudouin.",
+      hint: "Ce discours a surpris le roi des Belges qui était présent."
+    },
+    {
+      q: "Quelle grande compagnie minière belge dominait l'économie du Katanga colonial ?",
+      options: ["La Forminière", "L'Union Minière du Haut-Katanga", "La Géomines", "La Société Générale de Belgique"],
+      answer: 1,
+      explanation: "L'Union Minière du Haut-Katanga (UMHK) était la puissante compagnie minière qui exploitait le cuivre et d'autres minerais au Katanga.",
+      hint: "Son nom contient la province où elle opérait."
+    },
+    {
+      q: "La « Table Ronde » de Bruxelles en janvier 1960 a décidé de quoi ?",
+      options: ["La partition du Congo", "L'indépendance du Congo", "L'annexion du Katanga", "La réforme agraire"],
+      answer: 1,
+      explanation: "La Table Ronde de Bruxelles (janvier-février 1960) a réuni leaders congolais et belges pour négocier l'indépendance, fixée au 30 juin 1960.",
+      hint: "Cette conférence s'est tenue quelques mois avant une date historique de juin."
+    },
+    {
+      q: "Quel livre de Adam Hochschild a dénoncé les horreurs de la colonisation au Congo ?",
+      options: ["Au cœur des ténèbres", "Les Fantômes du roi Léopold", "Congo", "L'Afrique fantôme"],
+      answer: 1,
+      explanation: "« Les Fantômes du roi Léopold » (King Leopold's Ghost, 1998) de Adam Hochschild est un ouvrage majeur dénonçant les atrocités au Congo.",
+      hint: "Le titre évoque des apparitions liées à un monarque."
+    }
+  ],
+  "Culture & Arts": [
+    {
+      q: "Quel genre musical est né au Congo et a rayonné dans toute l'Afrique ?",
+      options: ["L'afrobeat", "La rumba congolaise", "Le highlife", "Le mbalax"],
+      answer: 1,
+      explanation: "La rumba congolaise, née dans les années 1940-50, est devenue l'un des genres musicaux les plus influents d'Afrique.",
+      hint: "Ce genre porte le nom d'une danse d'origine cubaine adaptée au Congo."
+    },
+    {
+      q: "Quel musicien congolais était surnommé « Le Sorcier de la guitare » ?",
+      options: ["Papa Wemba", "Franco Luambo", "Tabu Ley Rochereau", "Koffi Olomide"],
+      answer: 1,
+      explanation: "Franco Luambo Makiadi, leader du TP OK Jazz, était surnommé « Le Sorcier de la guitare » pour sa maîtrise exceptionnelle de l'instrument.",
+      hint: "Il dirigeait le TP OK Jazz."
+    },
+    {
+      q: "Quel musicien congolais était connu comme « Le Roi de la Rumba Rock » et « Sapeur en chef » ?",
+      options: ["Koffi Olomide", "Papa Wemba", "Werrason", "JB Mpiana"],
+      answer: 1,
+      explanation: "Papa Wemba (1949-2016) était le « Roi de la Rumba Rock » et une icône de la SAPE (Société des Ambianceurs et des Personnes Élégantes).",
+      hint: "Il est décédé sur scène à Abidjan en 2016."
+    },
+    {
+      q: "Que signifie « SAPE » dans la culture congolaise ?",
+      options: [
+        "Société des Ambianceurs et des Personnes Élégantes",
+        "Syndicat des Artistes et Performeurs Engagés",
+        "Style Africain Pour l'Élégance",
+        "Société Artistique du Peuple Engagé"
+      ],
+      answer: 0,
+      explanation: "La SAPE est un mouvement culturel et vestimentaire né au Congo, célébrant l'élégance et le raffinement vestimentaire.",
+      hint: "Le A est pour « Ambianceurs » et le E pour « Élégantes »."
+    },
+    {
+      q: "Quelle langue est la plus parlée à Kinshasa ?",
+      options: ["Le français", "Le lingala", "Le swahili", "Le kikongo"],
+      answer: 1,
+      explanation: "Le lingala est la langue véhiculaire de Kinshasa et de l'ouest de la RDC, bien que le français soit la langue officielle.",
+      hint: "C'est aussi la langue de la rumba congolaise."
+    },
+    {
+      q: "Combien de langues nationales la RDC reconnaît-elle officiellement ?",
+      options: ["2", "4", "6", "8"],
+      answer: 1,
+      explanation: "La RDC reconnaît 4 langues nationales : le lingala, le swahili, le tshiluba et le kikongo, en plus du français comme langue officielle.",
+      hint: "Lingala, swahili, tshiluba et..."
+    },
+    {
+      q: "Quel plat est considéré comme le plat national de la RDC ?",
+      options: ["Le fufu avec sauce", "Le pondu (saka-saka)", "Le poulet moambé", "La chikwangue"],
+      answer: 2,
+      explanation: "Le poulet moambé (poulet à la sauce de noix de palme) est souvent considéré comme le plat national de la RDC.",
+      hint: "C'est un plat à base de volaille et de sauce de noix de palme."
+    },
+    {
+      q: "Quel peintre congolais est célèbre pour ses œuvres d'art populaire et ses fresques urbaines ?",
+      options: ["Chéri Samba", "Mode Muntu", "Bodys Isek Kingelez", "Pierre Bodo"],
+      answer: 0,
+      explanation: "Chéri Samba est un artiste peintre congolais de renommée internationale, connu pour ses peintures narratives et colorées.",
+      hint: "Son prénom est un terme affectueux en français."
+    },
+    {
+      q: "Le « Ndombolo » est :",
+      options: ["Un instrument traditionnel", "Une danse et un style musical", "Un plat congolais", "Un vêtement traditionnel"],
+      answer: 1,
+      explanation: "Le ndombolo est une danse et un style musical congolais né dans les années 1990, popularisé par des artistes comme Koffi Olomide et Werrason.",
+      hint: "On le pratique dans les concerts et les fêtes."
+    },
+    {
+      q: "Quel artiste congolais est connu pour ses sculptures architecturales futuristes en carton ?",
+      options: ["Chéri Samba", "Bodys Isek Kingelez", "Freddy Tsimba", "Pume Bylex"],
+      answer: 1,
+      explanation: "Bodys Isek Kingelez (1948-2015) créait des maquettes de villes futuristes en matériaux de récupération, exposées au MoMA de New York.",
+      hint: "Ses œuvres ressemblent à des villes imaginaires du futur."
+    }
+  ],
+  "Géographie & Nature": [
+    {
+      q: "Quel est le fleuve principal de la RDC, le deuxième plus long d'Afrique ?",
+      options: ["Le Nil", "Le Zambèze", "Le Congo", "Le Niger"],
+      answer: 2,
+      explanation: "Le fleuve Congo est le deuxième plus long fleuve d'Afrique (4 700 km) et le plus profond du monde (plus de 220 mètres).",
+      hint: "Il porte le même nom que le pays."
+    },
+    {
+      q: "La RDC est le ___ème plus grand pays d'Afrique par sa superficie.",
+      options: ["Premier", "Deuxième", "Troisième", "Quatrième"],
+      answer: 1,
+      explanation: "La RDC est le 2ème plus grand pays d'Afrique (2 345 410 km²) après l'Algérie.",
+      hint: "L'Algérie est juste devant."
+    },
+    {
+      q: "Avec combien de pays la RDC partage-t-elle ses frontières ?",
+      options: ["7", "9", "5", "11"],
+      answer: 1,
+      explanation: "La RDC partage ses frontières avec 9 pays : Congo-Brazzaville, RCA, Soudan du Sud, Ouganda, Rwanda, Burundi, Tanzanie, Zambie et Angola.",
+      hint: "C'est un chiffre impair entre 8 et 10."
+    },
+    {
+      q: "Quel parc national congolais est célèbre pour ses gorilles de montagne ?",
+      options: ["Le Parc de la Garamba", "Le Parc des Virunga", "Le Parc de Kahuzi-Biega", "Le Parc de Salonga"],
+      answer: 1,
+      explanation: "Le Parc National des Virunga, créé en 1925, est le plus ancien d'Afrique et abrite des gorilles de montagne menacés.",
+      hint: "Ce parc est situé à l'est, près de la frontière avec le Rwanda et l'Ouganda."
+    },
+    {
+      q: "Quel est le plus grand lac de la RDC ?",
+      options: ["Le lac Kivu", "Le lac Tanganyika", "Le lac Albert", "Le lac Édouard"],
+      answer: 1,
+      explanation: "Le lac Tanganyika est le plus grand lac bordant la RDC, et aussi le plus long lac d'eau douce du monde (673 km).",
+      hint: "Il est partagé avec la Tanzanie, le Burundi et la Zambie."
+    },
+    {
+      q: "Quel volcan actif se trouve dans le Parc des Virunga ?",
+      options: ["Le Kilimandjaro", "Le Mont Cameroun", "Le Nyiragongo", "L'Erta Ale"],
+      answer: 2,
+      explanation: "Le Nyiragongo est l'un des volcans les plus actifs d'Afrique. Sa dernière éruption majeure date de 2021, menaçant la ville de Goma.",
+      hint: "Ce volcan a fait éruption en 2002 et 2021, menaçant une grande ville de l'est."
+    },
+    {
+      q: "Quelle est la principale ressource minière de la province du Katanga ?",
+      options: ["Le diamant", "L'or", "Le cuivre et le cobalt", "Le coltan"],
+      answer: 2,
+      explanation: "Le Katanga (Haut-Katanga) est mondialement connu pour ses gisements de cuivre et de cobalt, essentiels pour les batteries électriques.",
+      hint: "Ces deux métaux sont essentiels pour l'industrie des véhicules électriques."
+    },
+    {
+      q: "La RDC détient environ quel pourcentage des réserves mondiales de cobalt ?",
+      options: ["30%", "50%", "70%", "90%"],
+      answer: 2,
+      explanation: "La RDC détient environ 70% des réserves mondiales de cobalt, un minerai essentiel pour les batteries lithium-ion.",
+      hint: "C'est plus de la moitié des réserves mondiales."
+    }
+  ]
+};
+
+// ---------- APP STATE ----------
+var state = {
+  currentScreen: 'categories',
+  currentCategory: null,
+  currentQuestions: [],
+  currentIndex: 0,
+  score: 0,
+  correct: 0,
+  wrong: 0,
+  streak: 0,
+  bestStreak: 0,
+  answered: false,
+  hintUsed: false,
+  timer: null,
+  timeLeft: 20,
+  timerActive: false
+};
+
+// ---------- DOM REFS ----------
+var $screenCat = document.getElementById('screenCategories');
+var $screenQ = document.getElementById('screenQuestion');
+var $screenR = document.getElementById('screenResults');
+var $catGrid = document.getElementById('categoryGrid');
+var $scoreBar = document.getElementById('scoreBar');
+var $totalScore = document.getElementById('totalScore');
+var $correctCount = document.getElementById('correctCount');
+var $wrongCount = document.getElementById('wrongCount');
+var $streakCount = document.getElementById('streakCount');
+var $qCatText = document.getElementById('qCatText');
+var $qCurrent = document.getElementById('qCurrent');
+var $qTotal = document.getElementById('qTotal');
+var $progressFill = document.getElementById('progressFill');
+var $questionNumber = document.getElementById('questionNumber');
+var $questionText = document.getElementById('questionText');
+var $hintText = document.getElementById('hintText');
+var $answersGrid = document.getElementById('answersGrid');
+var $explanationBox = document.getElementById('explanationBox');
+var $hintBtn = document.getElementById('hintBtn');
+var $nextBtn = document.getElementById('nextBtn');
+var $qBackBtn = document.getElementById('qBackBtn');
+var $timerValue = document.getElementById('timerValue');
+var $timerDisplay = document.getElementById('timerDisplay');
+var $confetti = document.getElementById('confettiContainer');
+
+// ---------- CATEGORY ICONS ----------
+var catIcons = {
+  "Histoire & Époques": "fa-landmark",
+  "Présidents & Politique": "fa-university",
+  "Écrivains & Littérature": "fa-book-open",
+  "Colonisation": "fa-chain-broken",
+  "Culture & Arts": "fa-palette",
+  "Géographie & Nature": "fa-globe-africa"
+};
+
+// ---------- INIT CATEGORIES ----------
+function initCategories() {
+  var html = '';
+  var allCount = 0;
+  var catKeys = Object.keys(questions);
+
+  catKeys.forEach(function(cat) {
+    var count = questions[cat].length;
+    allCount += count;
+    var icon = catIcons[cat] || 'fa-question';
+    html += '<div class="cat-card" data-category="' + cat + '">' +
+      '<div class="cat-icon"><i class="fas ' + icon + '"></i></div>' +
+      '<div class="cat-title">' + cat + '</div>' +
+      '<div class="cat-count">' + count + ' questions</div>' +
+    '</div>';
+  });
+
+  // "Toutes" card
+  html += '<div class="cat-card" data-category="all">' +
+    '<div class="cat-icon"><i class="fas fa-layer-group"></i></div>' +
+    '<div class="cat-title">Toutes les catégories</div>' +
+    '<div class="cat-count">' + allCount + ' questions mélangées</div>' +
+  '</div>';
+
+  $catGrid.innerHTML = html;
+
+  // Event listeners
+  var cards = $catGrid.querySelectorAll('.cat-card');
+  cards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      var cat = this.getAttribute('data-category');
+      startQuiz(cat);
+    });
+  });
+}
+
+// ---------- SHUFFLE ----------
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+  return a;
+}
+
+// ---------- START QUIZ ----------
+function startQuiz(category) {
+  state.currentCategory = category;
+  state.currentIndex = 0;
+  state.score = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.streak = 0;
+  state.bestStreak = 0;
+  updateScoreBar();
+
+  if (category === 'all') {
+    var all = [];
+    Object.keys(questions).forEach(function(cat) {
+      questions[cat].forEach(function(q) {
+        var qCopy = Object.assign({}, q);
+        qCopy._category = cat;
+        all.push(qCopy);
+      });
+    });
+    state.currentQuestions = shuffle(all).slice(0, 20);
+    $qCatText.textContent = 'Toutes catégories';
+  } else {
+    state.currentQuestions = shuffle(questions[category]).slice(0, 10);
+    state.currentQuestions.forEach(function(q) { q._category = category; });
+    $qCatText.textContent = category;
+  }
+
+  $qTotal.textContent = state.currentQuestions.length;
+  showScreen('question');
+  loadQuestion();
+}
+
+// ---------- SHOW SCREEN ----------
+function showScreen(name) {
+  $screenCat.classList.remove('active');
+  $screenQ.classList.remove('active');
+  $screenR.classList.remove('active');
+
+  if (name === 'categories') $screenCat.classList.add('active');
+  else if (name === 'question') $screenQ.classList.add('active');
+  else if (name === 'results') $screenR.classList.add('active');
+
+  state.currentScreen = name;
+}
+
+// ---------- LOAD QUESTION ----------
+function loadQuestion() {
+  var q = state.currentQuestions[state.currentIndex];
+  state.answered = false;
+  state.hintUsed = false;
+
+  $qCurrent.textContent = state.currentIndex + 1;
+  $progressFill.style.width = ((state.currentIndex) / state.currentQuestions.length * 100) + '%';
+  $questionNumber.textContent = 'Q' + (state.currentIndex + 1);
+  $questionText.textContent = q.q;
+  $hintText.textContent = q.hint || '';
+  $hintText.classList.remove('visible');
+  $explanationBox.classList.remove('visible');
+  $explanationBox.innerHTML = '';
+  $nextBtn.style.display = 'none';
+  $hintBtn.style.display = '';
+  $hintBtn.disabled = false;
+
+  // Re-animate question card
+  var card = document.getElementById('questionCard');
+  card.style.animation = 'none';
+  void card.offsetHeight;
+  card.style.animation = 'fadeInUp 0.4s ease both';
+
+  // Answers
+  var letters = ['A', 'B', 'C', 'D'];
+  var html = '';
+  q.options.forEach(function(opt, i) {
+    html += '<button class="answer-btn" data-index="' + i + '">' +
+      '<span class="answer-letter">' + letters[i] + '</span>' +
+      '<span class="answer-text">' + opt + '</span>' +
+      '<span class="answer-result-icon"></span>' +
+    '</button>';
+  });
+  $answersGrid.innerHTML = html;
+
+  var btns = $answersGrid.querySelectorAll('.answer-btn');
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (!state.answered) {
+        handleAnswer(parseInt(this.getAttribute('data-index')));
+      }
+    });
+  });
+
+  // Start timer
+  startTimer();
+}
+
+// ---------- TIMER ----------
+function startTimer() {
+  clearInterval(state.timer);
+  state.timeLeft = 20;
+  state.timerActive = true;
+  $timerValue.textContent = state.timeLeft;
+  $timerDisplay.classList.remove('warning');
+
+  state.timer = setInterval(function() {
+    state.timeLeft--;
+    $timerValue.textContent = state.timeLeft;
+
+    if (state.timeLeft <= 5) {
+      $timerDisplay.classList.add('warning');
+    }
+
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      state.timerActive = false;
+      if (!state.answered) {
+        handleAnswer(-1); // Time's up
+      }
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(state.timer);
+  state.timerActive = false;
+}
+
+// ---------- HANDLE ANSWER ----------
+function handleAnswer(selectedIndex) {
+  if (state.answered) return;
+  state.answered = true;
+  stopTimer();
+
+  var q = state.currentQuestions[state.currentIndex];
+  var correctIndex = q.answer;
+  var btns = $answersGrid.querySelectorAll('.answer-btn');
+
+  // Disable all
+  btns.forEach(function(btn) { btn.classList.add('disabled'); });
+
+  // Mark correct
+  btns[correctIndex].classList.add('correct');
+  btns[correctIndex].querySelector('.answer-result-icon').innerHTML = '<i class="fas fa-check-circle"></i>';
+
+  if (selectedIndex === correctIndex) {
+    // Correct!
+    var points = 10;
+    if (state.timeLeft >= 15) points += 5;
+    else if (state.timeLeft >= 10) points += 3;
+    else if (state.timeLeft >= 5) points += 1;
+    if (!state.hintUsed) points += 2;
+
+    state.score += points;
+    state.correct++;
+    state.streak++;
+    if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+
+    if (state.streak >= 3) {
+      state.score += 3; // streak bonus
+    }
+  } else {
+    // Wrong
+    state.wrong++;
+    state.streak = 0;
+
+    if (selectedIndex >= 0) {
+      btns[selectedIndex].classList.add('wrong');
+      btns[selectedIndex].querySelector('.answer-result-icon').innerHTML = '<i class="fas fa-times-circle"></i>';
+    }
+  }
+
+  updateScoreBar();
+
+  // Show explanation
+  if (q.explanation) {
+    $explanationBox.innerHTML = '<strong><i class="fas fa-info-circle"></i> Explication :</strong> ' + q.explanation;
+    setTimeout(function() { $explanationBox.classList.add('visible'); }, 300);
+  }
+
+  // Show next button
+  setTimeout(function() { $nextBtn.style.display = ''; }, 400);
+  $hintBtn.style.display = 'none';
+}
+
+// ---------- SCORE BAR ----------
+function updateScoreBar() {
+  $totalScore.textContent = state.score;
+  $correctCount.textContent = state.correct;
+  $wrongCount.textContent = state.wrong;
+  $streakCount.textContent = state.streak;
+}
+
+// ---------- NEXT QUESTION ----------
+$nextBtn.addEventListener('click', function() {
+  state.currentIndex++;
+  if (state.currentIndex >= state.currentQuestions.length) {
+    showResults();
+  } else {
+    loadQuestion();
+  }
+});
+
+// ---------- HINT ----------
+$hintBtn.addEventListener('click', function() {
+  state.hintUsed = true;
+  $hintText.classList.add('visible');
+  $hintBtn.disabled = true;
+  $hintBtn.style.opacity = '0.5';
+});
+
+// ---------- BACK BUTTON ----------
+$qBackBtn.addEventListener('click', function() {
+  stopTimer();
+  showScreen('categories');
+});
+
+// ---------- SHOW RESULTS ----------
+function showResults() {
+  stopTimer();
+  showScreen('results');
+
+  var total = state.currentQuestions.length;
+  var pct = Math.round((state.correct / total) * 100);
+
+  document.getElementById('rScore').textContent = state.score;
+  document.getElementById('rCorrect').textContent = state.correct + '/' + total;
+  document.getElementById('rWrong').textContent = state.wrong;
+
+  var trophy, title, subtitle, message;
+
+  if (pct >= 90) {
+    trophy = '🏆';
+    title = 'Exceptionnel !';
+    subtitle = 'Vous êtes un vrai expert de la RDC !';
+    message = 'Avec <strong>' + pct + '% de bonnes réponses</strong> et un score de <strong>' + state.score + ' points</strong>, vous maîtrisez parfaitement la culture et l\'histoire de la République Démocratique du Congo. Meilleure série : <strong>' + state.bestStreak + ' réponses</strong> consécutives !';
+    launchConfetti();
+  } else if (pct >= 70) {
+    trophy = '🥇';
+    title = 'Très bien !';
+    subtitle = 'Vous connaissez bien la RDC';
+    message = '<strong>' + pct + '%</strong> de bonnes réponses ! Vous avez de solides connaissances. Score : <strong>' + state.score + '</strong> pts. Meilleure série : <strong>' + state.bestStreak + '</strong>. Continuez à explorer l\'histoire et la culture congolaise !';
+  } else if (pct >= 50) {
+    trophy = '🥈';
+    title = 'Pas mal !';
+    subtitle = 'Vous avez de bonnes bases';
+    message = 'Avec <strong>' + pct + '%</strong>, vous avez des connaissances de base sur la RDC. Score : <strong>' + state.score + '</strong> pts. Il y a encore beaucoup à découvrir sur ce magnifique pays !';
+  } else {
+    trophy = '📚';
+    title = 'À réviser !';
+    subtitle = 'La RDC a tant à vous apprendre';
+    message = '<strong>' + pct + '%</strong> de bonnes réponses. Ne vous découragez pas ! La RDC a une histoire et une culture incroyablement riches. Rejouez pour améliorer vos connaissances ! Score : <strong>' + state.score + '</strong> pts.';
+  }
+
+  document.getElementById('resultsTrophy').textContent = trophy;
+  document.getElementById('resultsTitle').textContent = title;
+  document.getElementById('resultsSubtitle').textContent = subtitle;
+  document.getElementById('resultsMessage').innerHTML = message;
+}
+
+// ---------- CONFETTI ----------
+function launchConfetti() {
+  $confetti.innerHTML = '';
+  var colors = ['#d4a843', '#f0d078', '#2ecc71', '#3498db', '#e74c3c', '#9b59b6', '#F7D618', '#007FFF', '#CE1021'];
+  for (var i = 0; i < 60; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width = (Math.random() * 8 + 5) + 'px';
+    piece.style.height = (Math.random() * 8 + 5) + 'px';
+    piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    piece.style.animationDelay = (Math.random() * 1.5) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    $confetti.appendChild(piece);
+  }
+  setTimeout(function() { $confetti.innerHTML = ''; }, 5000);
+}
+
+// ---------- REPLAY / HOME ----------
+document.getElementById('replayBtn').addEventListener('click', function() {
+  startQuiz(state.currentCategory);
+});
+
+document.getElementById('homeBtn').addEventListener('click', function() {
+  showScreen('categories');
+});
+
+// ---------- INIT ----------
+initCategories();
+
+</script>
+</body>
+</html>
